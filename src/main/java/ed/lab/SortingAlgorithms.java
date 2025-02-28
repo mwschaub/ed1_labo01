@@ -3,53 +3,52 @@ package ed.lab;
 import java.util.Random;
 
 public class SortingAlgorithms {
-    public static <T extends Comparable<T>> void highPivotQuickSort(T[] array) {
+    public static void highPivotQuickSort(String[] array) {
         quickSort(array, 0, array.length - 1, "high");
     }
 
-    public static <T extends Comparable<T>> void lowPivotQuickSort(T[] array) {
+    public static void lowPivotQuickSort(String[] array) {
         quickSort(array, 0, array.length - 1, "low");
     }
 
-    public static <T extends Comparable<T>> void randomPivotQuickSort(T[] array) {
+    public static void randomPivotQuickSort(String[] array) {
         quickSort(array, 0, array.length - 1, "random");
     }
 
-    private static <T extends Comparable<T>> void quickSort(T[] array, int left, int right, String pivotType) {
-        if (left < right) {
-            int pivotIndex;
-            if ("high".equals(pivotType)) {
-                pivotIndex = right;
-            } else if ("low".equals(pivotType)) {
-                pivotIndex = left;
-            } else {
-                pivotIndex = new Random().nextInt(right - left + 1) + left; // Aleatorio
-            }
+    private static void quickSort(String[] array, int low, int high, String pivotType) {
+        if (low < high) {
+            int pivotIndex = switch (pivotType) {
+                case "high" -> high;
+                case "low" -> low;
+                case "random" -> new Random().nextInt(high - low + 1) + low;
+                default -> high;
+            };
 
-            pivotIndex = partition(array, left, right, pivotIndex);
-            quickSort(array, left, pivotIndex - 1, pivotType);
-            quickSort(array, pivotIndex + 1, right, pivotType);
+            String pivot = array[pivotIndex];
+            swap(array, pivotIndex, high);
+
+            int partitionIndex = partition(array, low, high, pivot);
+            quickSort(array, low, partitionIndex - 1, pivotType);
+            quickSort(array, partitionIndex + 1, high, pivotType);
         }
     }
 
-    private static <T extends Comparable<T>> int partition(T[] array, int left, int right, int pivotIndex) {
-        T pivotValue = array[pivotIndex];
-        swap(array, pivotIndex, right);
-        int storeIndex = left;
-
-        for (int i = left; i < right; i++) {
-            if (array[i].compareTo(pivotValue) < 0) {
-                swap(array, i, storeIndex);
-                storeIndex++;
+    private static int partition(String[] array, int low, int high, String pivot) {
+        int i = low;
+        for (int j = low; j < high; j++) {
+            if (array[j].compareTo(pivot) < 0) {
+                swap(array, i, j);
+                i++;
             }
         }
-        swap(array, storeIndex, right);
-        return storeIndex;
+        swap(array, i, high);
+        return i;
     }
 
-    private static <T> void swap(T[] array, int i, int j) {
-        T temp = array[i];
+    private static void swap(String[] array, int i, int j) {
+        String temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
 }
+
