@@ -22,7 +22,7 @@ public class Main {
         Random rand = new Random();
         Integer[] arr = new Integer[length];
         for (int i = 0; i < length; i++) {
-            arr[i] = rand.nextInt(100); // aquí use de limite 100
+            arr[i] = rand.nextInt(10000);
         }
         return arr;
     }; // Reemplácelo por una función lambda crear un array completamente aleatorio
